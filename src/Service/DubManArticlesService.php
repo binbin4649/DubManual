@@ -168,10 +168,7 @@ class DubManArticlesService implements DubManArticlesServiceInterface
      */
     private function handleFileUpload(?\Laminas\Diactoros\UploadedFile $img, \Cake\Datasource\EntityInterface $savedEntity): \Cake\Datasource\EntityInterface
     {
-        if (!empty($img)) {
-            // $tempFilePath = $img->getStream()->getMetadata('uri');
-            // $fileInfo = pathinfo($tempFilePath);
-            // $extension = $fileInfo['extension'];
+        if ($img->getError() === UPLOAD_ERR_OK) {
             $extension = pathinfo($img->getClientFilename(), PATHINFO_EXTENSION);
             $imgName = $savedEntity->id . '.' . $extension;
             $url = '/dub_manual/img/' . $imgName;

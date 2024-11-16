@@ -109,7 +109,6 @@ class DubManArticlesTable extends Table
                     }
                     $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
                     $extension = strtolower(pathinfo($value, PATHINFO_EXTENSION));
-
                     return in_array($extension, $allowedExtensions);
                 },
                 'message' => '許可されているファイル形式は jpg, jpeg, png, gif のみです。'

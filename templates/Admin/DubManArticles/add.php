@@ -79,7 +79,7 @@ $this->BcAdmin->setTitle(__d('baser_core', 'DubManArticle 新規登録'));
 
 <div class="submit bca-actions">
   <div class="bca-actions__before">
-    <?= $this->BcHtml->link(__d('baser_core', '一覧に戻る'), ['controller' => 'DubManCategories', 'action' => 'index'], [
+    <?= $this->BcHtml->link(__d('baser_core', '一覧に戻る'), ['controller' => 'DubManTopics', 'action' => 'index', $topic->id], [
       'class' => 'bca-btn bca-actions__item',
       'data-bca-btn-type' => 'back-to-list'
     ]) ?>

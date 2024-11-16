@@ -25,6 +25,29 @@ $this->BcAdmin->addAdminMainBodyHeaderLinks([
 //$this->BcAdmin->setSearch('dubManCategories_index');
 ?>
 
+<div class="bca-section">
+  <div class="bca-panel-box" id="FunctionBox">
+    <?= $this->BcHtml->link('Category追加', [
+      'action' => 'add',
+    ], [
+      'class' => ' bca-btn',
+      'data-bca-btn-type' => 'add',
+      'data-bca-btn-size' => 'lg'
+    ]) ?>
+    <?= $this->BcHtml->link('サイト確認', [
+      'plugin' => 'DubManual',
+      'controller' => 'DubMan',
+      'action' => 'index',
+      'prefix' => false
+    ], [
+      'class' => ' bca-btn bca-icon--alias',
+      'data-bca-btn-type' => 'view',
+      'data-bca-btn-size' => 'lg',
+      'target' => '_blank'
+    ]) ?>
+  </div>
+</div>
+
 <div class="bca-data-list">
   <table class="bca-table-listup">
     <thead class="bca-table-listup__thead">
@@ -64,14 +87,12 @@ $this->BcAdmin->addAdminMainBodyHeaderLinks([
               <td></td>
               <td class="bca-table-listup__tbody-td"><i class="bca-icon--file"></i></td>
               <td class="bca-table-listup__tbody-td"><?= $this->Number->format($dubManTopic->sort_order) ?></td>
-              <td colspan="2" class="bca-table-listup__tbody-td"><?= h($dubManTopic->name) ?></td>
+              <td colspan="2" class="bca-table-listup__tbody-td">
+                <a href="<?= $this->Url->build(['controller' => 'DubManTopics', 'action' => 'index', $dubManTopic->id]) ?>" target="_blank">
+                  <?= h($dubManTopic->name) ?><i class="bca-icon--alias"></i>
+                </a>
+              </td>
               <td class="bca-table-listup__tbody-td bca-table-listup__tbody-td--actions" style="width:15%">
-                <?= $this->BcHtml->link('', ['controller' => 'DubManArticles', 'action' => 'add', $dubManTopic->id], [
-                  'title' => __d('baser_core', 'アーティクル追加'),
-                  'class' => ' bca-btn-icon',
-                  'data-bca-btn-type' => 'add',
-                  'data-bca-btn-size' => 'lg'
-                ]) ?>
                 <?= $this->BcHtml->link('', ['controller' => 'DubManTopics', 'action' => 'edit', $dubManTopic->id], [
                   'title' => __d('baser_core', 'トピック編集'),
                   'class' => ' bca-btn-icon',
@@ -80,28 +101,6 @@ $this->BcAdmin->addAdminMainBodyHeaderLinks([
                 ]) ?>
               </td>
             </tr>
-            <?php foreach ($dubManTopic->dub_man_articles as $dubManArticle): ?>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="bca-table-listup__tbody-td"><?= $this->Number->format($dubManArticle->sort_order) ?></td>
-                <td class="bca-table-listup__tbody-td">
-                  <?= $dubManArticle->id ?>:
-                  <?php if ($dubManArticle->img): ?>
-                    [img]:
-                  <?php endif; ?>
-                  <?= h($dubManArticle->name) ?></td>
-                <td class="bca-table-listup__tbody-td bca-table-listup__tbody-td--actions" style="width:15%">
-                  <?= $this->BcHtml->link('', ['controller' => 'DubManArticles', 'action' => 'edit', $dubManArticle->id], [
-                    'title' => __d('baser_core', 'アーティクル編集'),
-                    'class' => ' bca-btn-icon',
-                    'data-bca-btn-type' => 'edit',
-                    'data-bca-btn-size' => 'lg'
-                  ]) ?>
-                </td>
-              </tr>
-            <?php endforeach; ?>
           <?php endforeach; ?>
         <?php endforeach; ?>
       <?php else: ?>

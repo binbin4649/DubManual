@@ -25,14 +25,15 @@ class DubManTopicsController extends BcAdminAppController
     /**
      * Index method
      *
+     * @param \DubManual\Service\Admin\DubManTopicsAdminServiceInterface $service
+     * @param int $id
      * @return \Cake\Http\Response|null|void Renders view
      */
-    // public function index(\DubManual\Service\Admin\DubManTopicsAdminServiceInterface $service)
-    // {
-    // 	$this->set($service->getViewVarsForIndex(
-    // 		$this->paginate($service->getIndex())
-    // 	));
-    // }
+    public function index(\DubManual\Service\Admin\DubManTopicsAdminServiceInterface $service, int $id = null)
+    {
+        $topic = $service->getArticles((int)$id);
+        $this->set(compact('topic'));
+    }
 
     /**
      * View method

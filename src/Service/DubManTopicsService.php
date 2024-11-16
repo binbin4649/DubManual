@@ -65,6 +65,7 @@ class DubManTopicsService implements DubManTopicsServiceInterface
      */
     public function get(int $id, array $options = []): \Cake\Datasource\EntityInterface
     {
+        $options['contain'] = ['DubManArticles'];
         return $this->DubManTopics->get($id, $options);
     }
 
@@ -79,12 +80,37 @@ class DubManTopicsService implements DubManTopicsServiceInterface
     }
 
     /**
+     * getArticlesに置き換えたので要らない
      * get index
+     * @param int $id
      * @return \Cake\Datasource\QueryInterface
      */
-    public function getIndex(array $queryParams = []): \Cake\Datasource\QueryInterface
+    public function getIndex(int $id = null): \Cake\Datasource\QueryInterface
     {
-        return $this->createConditions($this->DubManTopics->find(), $queryParams);
+        return $this->createConditions(
+            $this->DubManTopics->find()
+                ->where(['DubManTopics.id' => $id])
+                ->contain(['DubManArticles'])
+                ->orderBy(['DubManTopics.sort_order' => 'ASC'])
+                ->limit(1)
+        );
+    }
+
+    /**
+     * getArticles
+     * @param int $id
+     * @return \Cake\Datasource\EntityInterface|null
+     */
+    public function getArticles(int $id): ?\Cake\Datasource\EntityInterface
+    {
+        $options['contain'] = [
+            'DubManArticles'
+        ];
+        $topic = $this->DubManTopics->get($id, $options);
+        if (empty($topic->dub_man_articles)) {
+            return null;
+        }
+        return $topic;
     }
 
     /**

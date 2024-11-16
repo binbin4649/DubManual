@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 /**
  * baserCMS :  Based Website Development Project <https://basercms.net>
@@ -14,128 +15,80 @@ declare(strict_types=1);
  * @var \BaserCore\View\BcAdminAppView $this
  * @var iterable<\Cake\Datasource\EntityInterface> $dubManTopics
  */
-$this->BcAdmin->setTitle(__d('baser_core', 'Dub Man Topics 一覧'));
+$this->BcAdmin->setTitle(__d('baser_core', $topic->name . ' Articles'));
 $this->BcAdmin->addAdminMainBodyHeaderLinks([
   'url' => ['action' => 'add'],
   'title' => __d('baser_core', '新規登録'),
 ]);
-$this->BcListTable->setColumnNumber(7);
 //$this->BcAdmin->setHelp('dubManTopics_form');
-//$this->BcAdmin->setSearch('dubManTopics_index');
-?>
 
+?>
+<div class="bca-section">
+  <div class="bca-panel-box" id="FunctionBox">
+    <?= $this->BcHtml->link('Article追加', [
+      'controller' => 'DubManArticles',
+      'action' => 'add',
+      $topic->id,
+    ], [
+      'class' => ' bca-btn',
+      'data-bca-btn-type' => 'add',
+      'data-bca-btn-size' => 'lg'
+    ]) ?>
+    <?= $this->BcHtml->link('サイト確認', [
+      'plugin' => 'DubManual',
+      'controller' => 'DubMan',
+      'action' => 'view',
+      $topic->id,
+      'prefix' => false
+    ], [
+      'class' => ' bca-btn bca-icon--alias',
+      'data-bca-btn-type' => 'view',
+      'data-bca-btn-size' => 'lg',
+      'target' => '_blank'
+    ]) ?>
+  </div>
+</div>
 
 <div class="bca-data-list">
-  <div class="bca-data-list__top">
-    <div class="bca-data-list__sub">
-      <?php $this->BcBaser->element('pagination') ?>
-    </div>
-  </div>
-
   <table class="bca-table-listup">
     <thead class="bca-table-listup__thead">
-    <tr>
-      <th class="bca-table-listup__thead-th">
-        <?= $this->Paginator->sort('id', [
-          'asc' => '<i class="bca-icon--asc"></i>' . __d('baser_core', 'Id'),
-          'desc' => '<i class="bca-icon--desc"></i>' . __d('baser_core', 'Id')
-          ], ['escape' => false, 'class' => 'btn-direction bca-table-listup__a']
-        ) ?>
-      </th>
-      <th class="bca-table-listup__thead-th">
-        <?= $this->Paginator->sort('name', [
-          'asc' => '<i class="bca-icon--asc"></i>' . __d('baser_core', 'Name'),
-          'desc' => '<i class="bca-icon--desc"></i>' . __d('baser_core', 'Name')
-          ], ['escape' => false, 'class' => 'btn-direction bca-table-listup__a']
-        ) ?>
-      </th>
-      <th class="bca-table-listup__thead-th">
-        <?= $this->Paginator->sort('category_id', [
-          'asc' => '<i class="bca-icon--asc"></i>' . __d('baser_core', 'Category Id'),
-          'desc' => '<i class="bca-icon--desc"></i>' . __d('baser_core', 'Category Id')
-          ], ['escape' => false, 'class' => 'btn-direction bca-table-listup__a']
-        ) ?>
-      </th>
-      <th class="bca-table-listup__thead-th">
-        <?= $this->Paginator->sort('sort_order', [
-          'asc' => '<i class="bca-icon--asc"></i>' . __d('baser_core', 'Sort Order'),
-          'desc' => '<i class="bca-icon--desc"></i>' . __d('baser_core', 'Sort Order')
-          ], ['escape' => false, 'class' => 'btn-direction bca-table-listup__a']
-        ) ?>
-      </th>
-      <th class="bca-table-listup__thead-th">
-        <?= $this->Paginator->sort('is_publish', [
-          'asc' => '<i class="bca-icon--asc"></i>' . __d('baser_core', 'Is Publish'),
-          'desc' => '<i class="bca-icon--desc"></i>' . __d('baser_core', 'Is Publish')
-          ], ['escape' => false, 'class' => 'btn-direction bca-table-listup__a']
-        ) ?>
-      </th>
-      <th class="bca-table-listup__thead-th">
-        <?= $this->Paginator->sort('created', [
-          'asc' => '<i class="bca-icon--asc"></i>' . __d('baser_core', 'Created'),
-          'desc' => '<i class="bca-icon--desc"></i>' . __d('baser_core', 'Created')
-          ], ['escape' => false, 'class' => 'btn-direction bca-table-listup__a']
-        ) ?>
-      </th>
-      <th class="bca-table-listup__thead-th">
-        <?= $this->Paginator->sort('modified', [
-          'asc' => '<i class="bca-icon--asc"></i>' . __d('baser_core', 'Modified'),
-          'desc' => '<i class="bca-icon--desc"></i>' . __d('baser_core', 'Modified')
-          ], ['escape' => false, 'class' => 'btn-direction bca-table-listup__a']
-        ) ?>
-      </th>
-      <th class="bca-table-listup__thead-th"><?= __d('baser_core', 'アクション') ?></th>
-    </tr>
+      <tr>
+        <th class="bca-table-listup__thead-th" style="width:3%">Id</th>
+        <th class="bca-table-listup__thead-th" style="width:3%">Img</th>
+        <th class="bca-table-listup__thead-th" style="width:3%">順</th>
+        <th class="bca-table-listup__thead-th">Article</th>
+        <th class="bca-table-listup__thead-th">Action</th>
+      </tr>
     </thead>
     <tbody class="bca-table-listup__tbody">
-<?php if (!$dubManTopics->isEmpty()): ?>
-  <?php foreach($dubManTopics as $key => $dubManTopic): ?>
-      <tr id="Row<?= $key ?>">
-        <td class="bca-table-listup__tbody-td"><?= $this->Number->format($dubManTopic->id) ?></td>
-        <td class="bca-table-listup__tbody-td"><?= h($dubManTopic->name) ?></td>
-        <td class="bca-table-listup__tbody-td"><?= $this->Number->format($dubManTopic->category_id) ?></td>
-        <td class="bca-table-listup__tbody-td"><?= $this->Number->format($dubManTopic->sort_order) ?></td>
-        <td class="bca-table-listup__tbody-td"><?= h($dubManTopic->is_publish) ?></td>
-        <td class="bca-table-listup__tbody-td"><?= h($dubManTopic->created) ?></td>
-        <td class="bca-table-listup__tbody-td"><?= h($dubManTopic->modified) ?></td>
-        <td class="bca-table-listup__tbody-td bca-table-listup__tbody-td--actions" style="width:15%">
-          <?php if (!empty($dubManTopic->status)) : ?>
-            <!--<?= $this->BcAdminForm->postLink('', ['action' => 'unpublish', $dubManTopic->id], [
-              'title' => __d('baser_core', '非公開'),
-              'class' => 'btn-unpublish bca-btn-icon',
-              'data-bca-btn-type' => 'unpublish',
-              'data-bca-btn-size' => 'lg'
-            ]) ?>-->
-            <?= $this->BcHtml->link('', ['action' => 'view', $dubManTopic->id], [
-              'title' => __d('baser_core', '確認'),
-              'class' => 'bca-btn-icon',
-              'data-bca-btn-type' => 'preview',
-              'data-bca-btn-size' => 'lg'
-            ]) ?>
-          <?php else: ?>
-            <!--<?= $this->BcAdminForm->postLink('', ['action' => 'publish', $dubManTopic->id], [
-              'title' => __d('baser_core', '公開'),
-              'class' => 'btn-publish bca-btn-icon',
-              'data-bca-btn-type' => 'publish',
-              'data-bca-btn-size' => 'lg'
-            ]) ?>-->
-          <?php endif ?>
-          <?= $this->BcHtml->link('', ['action' => 'edit', $dubManTopic->id], [
-              'title' => __d('baser_core', '編集'),
-              'class' => ' bca-btn-icon',
-              'data-bca-btn-type' => 'edit',
-              'data-bca-btn-size' => 'lg'
-          ]) ?>
-        </td>
-      </tr>
-  <?php endforeach; ?>
-<?php else: ?>
-      <tr>
-        <td colspan="<?= $this->BcListTable->getColumnNumber() ?>" class="bca-table-listup__tbody-td">
-          <p class="no-data"><?= __d('baser_core', 'データがありません。') ?></p>
-        </td>
-      </tr>
-<?php endif ?>
+      <?php if ($topic): ?>
+        <?php foreach ($topic->dub_man_articles as $key => $article): ?>
+          <tr>
+            <td class="bca-table-listup__tbody-td"><?= $article->id ?></td>
+            <td class="bca-table-listup__tbody-td">
+              <?php if ($article->img): ?>
+                <i class="bca-icon--file"></i>
+              <?php endif; ?>
+            </td>
+            <td class="bca-table-listup__tbody-td"><?= $this->Number->format($article->sort_order) ?></td>
+            <td class="bca-table-listup__tbody-td"><?= $article->article_display ?></td>
+            <td class="bca-table-listup__tbody-td bca-table-listup__tbody-td--actions" style="width:15%">
+              <?= $this->BcHtml->link('', ['controller' => 'DubManArticles', 'action' => 'edit', $article->id], [
+                'title' => __d('baser_core', 'アーティクル編集'),
+                'class' => ' bca-btn-icon',
+                'data-bca-btn-type' => 'edit',
+                'data-bca-btn-size' => 'lg'
+              ]) ?>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <tr>
+          <td colspan="4" class="bca-table-listup__tbody-td">
+            <p class="no-data"><?= __d('baser_core', 'データが見つかりませんでした。') ?></p>
+          </td>
+        </tr>
+      <?php endif; ?>
     </tbody>
   </table>
 </div>

@@ -71,11 +71,9 @@ class DubManCategoriesService implements DubManCategoriesServiceInterface
      */
     public function getIndex(): \Cake\Datasource\QueryInterface
     {
-        // return $this->createConditions($this->DubManCategories->find()->contain(['DubManTopics.DubManArticles']));
-
         return $this->createConditions(
             $this->DubManCategories->find()
-                ->contain(['DubManTopics.DubManArticles'])
+                ->contain(['DubManTopics'])
                 ->orderBy(['DubManCategories.sort_order' => 'ASC'])
         );
     }

@@ -49,9 +49,17 @@ interface DubManTopicsServiceInterface
 
     /**
      * get index
+     * @param int $id
      * @return \Cake\Datasource\QueryInterface
      */
-    public function getIndex(array $queryParams = []): \Cake\Datasource\QueryInterface;
+    public function getIndex(int $id = null): \Cake\Datasource\QueryInterface;
+
+    /**
+     * getArticles
+     * @param int $id
+     * @return \Cake\Datasource\EntityInterface|null
+     */
+    public function getArticles(int $id): ?\Cake\Datasource\EntityInterface;
 
     /**
      * create conditions

@@ -32,4 +32,10 @@ class DubManTopicsServiceTest extends BcTestCase
         $category = $this->DubManTopicsService->getCategoryById('1');
         $this->assertInstanceOf(\Cake\Datasource\EntityInterface::class, $category);
     }
+
+    public function testGetArticles(): void
+    {
+        $articles = $this->DubManTopicsService->getArticles(1);
+        $this->assertInstanceOf(\Cake\Datasource\EntityInterface::class, $articles);
+    }
 }

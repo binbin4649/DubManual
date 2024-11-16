@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 /**
  * baserCMS :  Based Website Development Project <https://basercms.net>
@@ -45,5 +46,14 @@ class DubManArticle extends Entity
         'sort_order' => true,
         'created' => true,
         'modified' => true,
+        'article_display' => true,
     ];
+
+    protected function _getArticleDisplay(): string
+    {
+        if ($this->article === null) {
+            return null;
+        }
+        return mb_substr(preg_replace('/\s+/', '', strip_tags($this->article)), 0, 50);
+    }
 }

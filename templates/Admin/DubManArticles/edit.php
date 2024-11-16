@@ -92,7 +92,7 @@ $this->BcAdmin->addAdminMainBodyHeaderLinks([
 
 <div class="submit bca-actions">
   <div class="bca-actions__before">
-    <?= $this->BcHtml->link(__d('baser_core', '一覧に戻る'), ['controller' => 'DubManCategories', 'action' => 'index'], [
+    <?= $this->BcHtml->link(__d('baser_core', '一覧に戻る'), ['controller' => 'DubManTopics', 'action' => 'index', $dubManArticle->dub_man_topic->id], [
       'class' => 'bca-btn bca-actions__item',
       'data-bca-btn-type' => 'back-to-list'
     ]) ?>
@@ -113,7 +113,7 @@ $this->BcAdmin->addAdminMainBodyHeaderLinks([
       ['action' => 'delete', $dubManArticle->id],
       [
         'block' => true,
-        'confirm' => __d('baser_core', '{0} を本当に削除してもいいですか？', $dubManArticle->name),
+        'confirm' => __d('baser_core', '{0} を本当に削除してもいいですか？', $dubManArticle->id),
         'class' => 'bca-btn bca-actions__item',
         'data-bca-btn-type' => 'delete',
         'data-bca-btn-size' => 'sm',
