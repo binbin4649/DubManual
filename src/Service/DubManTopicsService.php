@@ -107,9 +107,6 @@ class DubManTopicsService implements DubManTopicsServiceInterface
             'DubManArticles'
         ];
         $topic = $this->DubManTopics->get($id, $options);
-        if (empty($topic->dub_man_articles)) {
-            return null;
-        }
         return $topic;
     }
 

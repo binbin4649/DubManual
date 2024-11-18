@@ -12,7 +12,7 @@ class DubManController extends BcFrontAppController
 {
     public function index(DubManCategoriesServiceInterface $service)
     {
-        $categories = $service->getIndex();
+        $categories = $service->getIndex()->where(['DubManCategories.is_publish' => true]);
         $this->set(compact('categories'));
     }
 

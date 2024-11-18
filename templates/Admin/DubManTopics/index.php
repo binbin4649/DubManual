@@ -34,6 +34,16 @@ $this->BcAdmin->addAdminMainBodyHeaderLinks([
       'data-bca-btn-type' => 'add',
       'data-bca-btn-size' => 'lg'
     ]) ?>
+    <?= $this->BcHtml->link(
+      '仕様確認',
+      'https://docs.google.com/spreadsheets/d/1vlJjsQzbmu2mF3ddp36Qardt_Of3FDUXpItf9vRhw6k/edit?pli=1&gid=1020770683#gid=1020770683',
+      [
+        'class' => ' bca-btn bca-icon--alias',
+        'data-bca-btn-type' => 'view',
+        'data-bca-btn-size' => 'lg',
+        'target' => '_blank'
+      ]
+    ) ?>
     <?= $this->BcHtml->link('サイト確認', [
       'plugin' => 'DubManual',
       'controller' => 'DubMan',

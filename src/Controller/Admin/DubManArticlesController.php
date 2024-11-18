@@ -67,14 +67,12 @@ class DubManArticlesController extends BcAdminAppController
             }
             try {
                 $entity = $service->create($this->getRequest()->getData());
-
                 // EVENT DubManArticles.afterAdd
                 $this->dispatchLayerEvent('afterAdd', [
                     'data' => $entity
                 ]);
-                $this->BcMessage->setSuccess(__d('baser_core', "DubManArticles「{0}」を登録しました。", $entity->name));
-                // return $this->redirect(['action' => 'edit', $entity->id]);
-                return $this->redirect(['controller' => 'DubManCategories', 'action' => 'index']);
+                $this->BcMessage->setSuccess(__d('baser_core', "DubManArticles「{0}」を登録しました。", $entity->id));
+                return $this->redirect(['controller' => 'DubManTopics', 'action' => 'index', $entity->topic_id]);
             } catch (\Cake\ORM\Exception\PersistenceFailedException $e) {
                 $entity = $e->getEntity();
                 $this->BcMessage->setError(__d('baser_core', '入力エラーです。内容を修正してください。'));
@@ -119,8 +117,8 @@ class DubManArticlesController extends BcAdminAppController
                     'data' => $entity
                 ]);
 
-                $this->BcMessage->setSuccess(__d('baser_core', "DubManArticles「{0}」を更新しました。", $entity->name));
-                return $this->redirect(['action' => 'edit', $id]);
+                $this->BcMessage->setSuccess(__d('baser_core', "DubManArticles「{0}」を更新しました。", $entity->id));
+                return $this->redirect(['controller' => 'DubManTopics', 'action' => 'index', $entity->topic_id]);
             } catch (\Cake\ORM\Exception\PersistenceFailedException $e) {
                 $entity = $e->getEntity();
                 $this->BcMessage->setError(__d('baser_core', '入力エラーです。内容を修正してください。'));
