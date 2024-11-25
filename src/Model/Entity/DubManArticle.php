@@ -47,6 +47,7 @@ class DubManArticle extends Entity
         'created' => true,
         'modified' => true,
         'article_display' => true,
+        'img_delete' => true,
     ];
 
     protected function _getArticleDisplay(): string

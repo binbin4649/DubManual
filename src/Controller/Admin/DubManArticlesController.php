@@ -141,18 +141,18 @@ class DubManArticlesController extends BcAdminAppController
     public function delete(\DubManual\Service\Admin\DubManArticlesAdminServiceInterface $service, $id = null)
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
+        $entity = $service->get((int) $id);
         try {
-            $entity = $service->get((int) $id);
             if ($service->delete((int) $id)) {
                 $this->BcMessage->setSuccess(__d(
                     'baser_core',
                     'エントリー「{0}」を削除しました。',
-                    $entity->name
+                    $entity->id
                 ));
             }
         } catch (\Throwable $e) {
             $this->BcMessage->setError(__d('baser_core', 'データベース処理中にエラーが発生しました。') . $e->getMessage());
         }
-        return $this->redirect(['controller' => 'DubManCategories', 'action' => 'index']);
+        return $this->redirect(['controller' => 'DubManTopics', 'action' => 'index', $entity->topic_id]);
     }
 }

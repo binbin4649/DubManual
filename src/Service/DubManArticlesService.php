@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace DubManual\Service;
 
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
+use BaserCore\Utility\BcUtil;
+
 
 /**
  * DubManArticles Service
@@ -141,6 +144,7 @@ class DubManArticlesService implements DubManArticlesServiceInterface
     {
         $img = $postData['img'];
         $postData['img'] = null;
+        $target = $this->deleteImageIfRequested($target, $postData);
         $user = $this->DubManArticles->patchEntity($target, $postData);
         $savedEntity = $this->DubManArticles->saveOrFail($user);
         $savedEntity = $this->handleFileUpload($img, $savedEntity);
@@ -154,8 +158,9 @@ class DubManArticlesService implements DubManArticlesServiceInterface
      */
     public function delete(int $id): bool
     {
-        $user = $this->get($id);
-        return $this->DubManArticles->delete($user);
+        $article = $this->get($id);
+        $article = $this->deleteImageIfRequested($article, ['img_delete' => 1]);
+        return $this->DubManArticles->delete($article);
     }
 
     /**
@@ -168,13 +173,17 @@ class DubManArticlesService implements DubManArticlesServiceInterface
      */
     private function handleFileUpload(?\Laminas\Diactoros\UploadedFile $img, \Cake\Datasource\EntityInterface $savedEntity): \Cake\Datasource\EntityInterface
     {
+        $theme = BcUtil::getCurrentTheme();
+        $path = ROOT . DS . 'plugins' . DS . $theme . DS . 'webroot' . DS . 'img' . DS . 'DubManual';
         if ($img->getError() === UPLOAD_ERR_OK) {
             $extension = pathinfo($img->getClientFilename(), PATHINFO_EXTENSION);
             $imgName = $savedEntity->id . '.' . $extension;
-            $url = '/dub_manual/img/' . $imgName;
-            $path = ROOT . DS . 'plugins' . DS . 'DubManual' . DS . 'webroot' . DS . 'img' . DS . $imgName;
+            $url = '/' . Inflector::underscore($theme) . '/img/DubManual/' . $imgName;
+            if (!is_dir($path)) {
+                mkdir($path, 0755, true);
+            }
             try {
-                $img->moveTo($path);
+                $img->moveTo($path . DS . $imgName);
                 $savedEntity->img = $url;
                 $this->DubManArticles->saveOrFail($savedEntity);
             } catch (\Exception $e) {
@@ -186,5 +195,25 @@ class DubManArticlesService implements DubManArticlesServiceInterface
             }
         }
         return $savedEntity;
+    }
+
+    /**
+     * 画像削除リクエストがあった場合に画像を削除します。
+     *
+     * @param \Cake\Datasource\EntityInterface $target エンティティ
+     * @param array $postData 投稿データ
+     * @return \Cake\Datasource\EntityInterface エンティティ
+     */
+    public function deleteImageIfRequested(\Cake\Datasource\EntityInterface $target, array $postData): \Cake\Datasource\EntityInterface
+    {
+        if (!empty($postData['img_delete']) && $postData['img_delete'] == 1 && !empty($target->img)) {
+            $theme = BcUtil::getCurrentTheme();
+            $imgPath = ROOT . DS . 'plugins' . DS . $theme . DS . 'webroot' . DS . 'img' . DS . 'DubManual' . DS . basename($target->img);
+            if (file_exists($imgPath)) {
+                unlink($imgPath);
+            }
+            $target->img = null;
+        }
+        return $target;
     }
 }

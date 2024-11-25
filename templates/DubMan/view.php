@@ -22,8 +22,8 @@ $jump_counter = 0; //ページ内リンク(ジャンプ)のカウンター
     <section class="mb-5 mx-3">
       <p class="small">
         <a href="#jump-<?= $jump_counter ?>" id="jump-<?= $jump_counter ?>" class="jump-view me-2">i</a>
-        <?= nl2br($article->article) ?><
-          /p>
+        <?= nl2br($article->article) ?>
+      </p>
     </section>
   <?php endif; ?>
 <?php endforeach; ?>
